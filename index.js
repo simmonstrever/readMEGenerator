@@ -44,7 +44,7 @@ inquirer.prompt([
 ]).then(function (answers) {
     // array of questions for user
     console.log(answers.title);
-    const userEntry = "# " + answers.title
+    const userEntry = `# ${answers.title}`;
     // \n Description: ${answers.description} \n Installation: ${answers.installation};
     console.log(userEntry);
 
