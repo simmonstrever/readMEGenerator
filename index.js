@@ -48,7 +48,7 @@ inquirer.prompt([
     // \n Description: ${answers.description} \n Installation: ${answers.installation};
     console.log(userEntry);
 
-    fs.appendFile('test.md', userEntry, (err) => {
+    fs.writeFile('test.md', userEntry, (err) => {
         if (err){
             return console.log(err);
         }
