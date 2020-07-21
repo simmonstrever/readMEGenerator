@@ -1,6 +1,8 @@
 const inquirer = require('inquirer');
 const fs = require("fs");
-inquirer.prompt([
+const path = require("path");
+const generateMarkDown = require("./generateMarkDown")
+const questions = [
     {
         type: "input",
         message: "Please enter the name of your project",
@@ -14,58 +16,69 @@ inquirer.prompt([
     {
         type: "input",
         message: "Please provide a step by step description on how to get the environment running",
-        name: "installation"
+        name: "why"
     },
     {
         type: "input",
         message: "Please Enter Usage Information",
-        name: "usage"
+        name: "how"
     },
     {
         type: "input",
         message: "Please list all collaborators on the project",
-        name: "credit"
+        name: "install"
     },
-    // {
-    //     type: "input",
-    //     message: "What is the name of your repository housing your app?",
-    //     name: "repo"
-    // },
+    {
+        type: "list",
+        message: "Please select a license",
+        name: "license",
+        choices: ["ISC", "MIT", "GNU", "Apache License 2.0"]
+    },
+    {
+        type: "input",
+        message: "What is the name of your email?",
+        name: "email"
+    },
     {
         type: "input",
         message: "What are the contribution guidlines?",
-        name: "contributionguidelines"
+        name: "collaborators"
     },
     {
         type: "input",
         message: "What are the testing instructions?",
-        name: "testing"
+        name: "tests"
+    },
+    {
+        type: "input",
+        message: "gimme your git hub username",
+        name: "github"
     }
-]).then(function (answers) { //use arrow function here answers is the parameter
-    // array of questions for user
-    console.log(answers.title);
-    const userEntry = `# ${answers.title}  \n \n ## Description \n ${answers.description} \n \n ## Installation \n ${answers.installation} \n \n ## Usage \n ${answers.usage} \n \n ## Credits \n ${answers.credit} \n \n ## Contributing \n ${answers.contributionguidelines} \n \n ## Tests \n ${answers.testing}`;
-    // \n Description: ${answers.description} \n Installation: ${answers.installation};
-    console.log(userEntry);
+];
 
-    fs.writeFile('test.md', userEntry, (err) => {
-        if (err){
-            return console.log(err);
-        }
-        console.log("we did it")
-    });
-
-
+//use arrow function here answers is the parameter
 // array of questions for user
-// const questions = [];
+// console.log(answers.title);
+// const userEntry = `![GitHub]# ${answers.title}  \n \n ## Description \n ${answers.description} ##tableOContents *[installation](#installation) \n \n ## Installation \n ${answers.installation} \n \n ## Usage \n ${answers.usage} \n \n ## Credits \n ${answers.credit} \n \n ## Contributing \n ${answers.contributionguidelines} \n \n ## Tests \n ${answers.testing}`;
+// \n Description: ${answers.description} \n Installation: ${answers.installation};
 
-// function to write README file
-// function writeToFile("TestREADME.md", userEntry, (err) => ) {}
+
+
+
+
+
+
+function writeToFile(fileName, data) {
+    return fs.writeFileSync(path.join(process.cwd(), fileName), data)
+}
 
 // function to initialize program
-// function init() { }
+function init() {
+    inquirer.prompt(questions).then(answers => {
+        writeToFile("Readme.md", generateMarkDown({ ...answers }))
+    })
+}
 
 // function call to initialize program
-// init();
+init();
 
-});
